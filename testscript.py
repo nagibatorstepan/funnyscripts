@@ -3,14 +3,17 @@ import os
 import math
 import codecs
 
-'''count=0
+count=0
 supadict=[]
-with open('smallinfo.json', 'r') as info:
+with open('superinfo.json', 'r') as info:
     for line in info:
         try:
             obj = json.loads(line)
-            if obj['location']['country_code'] != '':
-                supadict.append((obj['ip'], obj['location']['country_code']))
+            field = 'location'
+            if obj.get('__restricted_location', {}):
+                field = '__restricted_location'
+            if obj[field]['country_code'] != '':
+                supadict.append((obj['ip'], obj[field]['country_code']))
                 #outlist.write(obj['ip'] + ' ' + obj['location']['country_code'] + '\n')
                 count+=1
         except:
@@ -29,7 +32,7 @@ for elem in supadict:
     countryfile.write(elem[0] + '\n')
 countryfile.close()
 
-with open('bigrandom.dot', 'w') as dotfile:
+with open('superbigrandom.dot', 'w') as dotfile:
     for f in os.listdir('country_ips'):
         countryfile = open('country_ips/' + f, 'r')
         lines = countryfile.readlines()
@@ -42,10 +45,10 @@ with open('bigrandom.dot', 'w') as dotfile:
             countrylinks.append((src, dst))
         unique = set(countrylinks)
         for item in unique:
-            dotfile.write('\"%s\" -> \"%s\";\n' % (lines[item[0]][:-1], lines[item[1]][:-1]))'''
+            dotfile.write('\"%s\" -> \"%s\";\n' % (lines[item[0]][:-1], lines[item[1]][:-1]))
 
 
-with open('bigrandom.dot', 'a') as dotfile:
+with open('superbigrandom.dot', 'a') as dotfile:
     countries = os.listdir('country_ips')
     for i in range(int(len(countries)*100)):
         src_country = int(codecs.encode(os.urandom(4), 'hex'), 16) % len(countries)
